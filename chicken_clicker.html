@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chicken Clicker</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f6f3ee;
+      display: flex;
+      gap: 24px;
+      padding: 24px;
+    }
+    .game {
+      flex: 1;
+      text-align: center;
+    }
+    .stats {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+    #chickenBtn {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    #chickenBtn img {
+      width: 220px;
+      transition: transform 0.1s;
+    }
+    #chickenBtn:active img {
+      transform: scale(0.95);
+    }
+    .shop {
+      width: 260px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .upgrade {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+    .upgrade img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+    button.buy {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      background: #ff9f1c;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.buy:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="game">
+    <div class="stats">
+      🍗 Chickens: <span id="count">0</span><br />
+      🔥 Per second: <span id="cps">0</span>
+    </div>
+
+    <button id="chickenBtn">
+      <!-- Replace src with your chicken image -->
+      <img src="chicken.png" alt="Chicken" />
+    </button>
+  </div>
+
+  <div class="shop">
+    <h2>Upgrades</h2>
+
+    <div class="upgrade">
+      <!-- Replace src with your frying chicken gif -->
+      <img src="upgrade.gif" alt="Frying Chicken" />
+      <strong>Frying Pan</strong><br />
+      +1 chicken / sec<br />
+      Cost: <span id="upgradeCost">10</span>
+      <br /><br />
+      <button class="buy" id="buyUpgrade">Buy</button>
+    </div>
+  </div>
+
+  <script>
+    let chickens = 0;
+    let cps = 0;
+    let upgradeCost = 10;
+
+    const countEl = document.getElementById('count');
+    const cpsEl = document.getElementById('cps');
+    const costEl = document.getElementById('upgradeCost');
+    const buyBtn = document.getElementById('buyUpgrade');
+
+    document.getElementById('chickenBtn').addEventListener('click', () => {
+      chickens++;
+      updateUI();
+    });
+
+    buyBtn.addEventListener('click', () => {
+      if (chickens >= upgradeCost) {
+        chickens -= upgradeCost;
+        cps += 1;
+        upgradeCost = Math.floor(upgradeCost * 1.5);
+        costEl.textContent = upgradeCost;
+        updateUI();
+      }
+    });
+
+    function updateUI() {
+      countEl.textContent = Math.floor(chickens);
+      cpsEl.textContent = cps;
+      buyBtn.disabled = chickens < upgradeCost;
+    }
+
+    setInterval(() => {
+      chickens += cps;
+      updateUI();
+    }, 1000);
+
+    updateUI();
+  </script>
+</body>
+</html>
